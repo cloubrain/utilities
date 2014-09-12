@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from itertools import chain, islice
+from collections import deque
+from math import ceil, floor
 from iterators import slide
 from copy import deepcopy
 
@@ -51,7 +53,36 @@ class MovingAverage(object):
         self.value = deepcopy(avg)
 
 
+def compute_quartiles(_list):
+    """
+        Invariant: _list is sorted in application specific order
+    """
+    quartiles = dict()
+    stack = deque([("50%", 0, len(_list), )])
+    while len(stack):
+        key, start, stop = stack.popleft()
+        if (stop - start) % 2:
+            mid_point = (stop - start - 1) / 2
+            left = mid_point
+            right = mid_point
+            median = float(_list[mid_point + start])
+        else:
+            mid_point = (stop - start - 1) / 2.00
+            left = int(floor(mid_point))
+            right = int(ceil(mid_point))
+            median = (_list[left + start] + _list[right + start]) / 2.00
+        quartiles[key] = median
+        if key == "50%":
+            stack.appendleft(("25%", start, left, ))
+            stack.appendleft(("75%", right + 1, stop))
+    return quartiles
+
 if __name__ == '__main__':
+    try:
+        import simplejson as json
+    except ImportError:
+        import json
+
     test = (7, 1, 8, 0, 4, 5, 3, 12, 0, 0, 4, -14, 20, )
     ema = MovingAverage('exponential', alpha=0.20, warm_up=True)
     sma = MovingAverage('simple', n_samples=10)
@@ -59,4 +90,6 @@ if __name__ == '__main__':
     sma(test)
     print(ema.value)
     print(sma.value)
+
+    print(json.dumps(compute_quartiles(sorted(test)), sort_keys=True))
 
