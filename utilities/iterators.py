@@ -43,3 +43,13 @@ def time_range(start, stop, interval=1):
         yield ptr
         ptr += timedelta(hours=interval)
 
+if __name__ == '__main__':
+    test = (7, 1, 8, 0, 4, 5, 3, 12, 0, 0, 4, -14, 20, )
+    for chunk in slide(test, window=5):
+        print(chunk)
+
+    start = datetime(2014, 1, 1, hour=0)
+    stop = datetime(2014, 1, 1, hour=10)
+    for curr_time in time_range(start, stop, interval=2):
+        print(curr_time.strftime("%Y%m%d%H"))
+
