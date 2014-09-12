@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from itertools import chain, islice
+from iterators import slide
+from copy import deepcopy
 
 # This file is part of Utilities.
 #
@@ -17,6 +19,7 @@ from itertools import chain, islice
 #     along with Utilities.  If not, see <http://www.gnu.org/licenses/>.
 
 __author__ = 'horia margarit'
+
 
 class MovingAverage(object):
 
@@ -46,4 +49,14 @@ class MovingAverage(object):
         for elem in chain(first[1:], args):
             avg = (self.__alpha * elem) + ((1.0 - self.__alpha) * avg)
         self.value = deepcopy(avg)
+
+
+if __name__ == '__main__':
+    test = (7, 1, 8, 0, 4, 5, 3, 12, 0, 0, 4, -14, 20, )
+    ema = MovingAverage('exponential', alpha=0.20, warm_up=True)
+    sma = MovingAverage('simple', n_samples=10)
+    ema(test)
+    sma(test)
+    print(ema.value)
+    print(sma.value)
 
