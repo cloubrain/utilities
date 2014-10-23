@@ -42,3 +42,25 @@ def horizontal_bar(groups, values, **kwargs):
         init_group_pos += thickness + spacing + group_spread
     return ax
 
+def vertical_bar(groups, values, **kwargs):
+    if 'axes' in kwargs:
+        ax = kwargs.pop('axes')
+    else:
+        ax = plt.figure().add_subplot(111)
+    labels = kwargs.pop('bar_labels', None)
+    spacing = kwargs.pop('bar_spacing', 0.2)
+    thickness = kwargs.pop('bar_thickness', 0.8)
+    offset = kwargs.pop('offset_from_axis', 0.0)
+    group_spread = kwargs.pop('group_spread', 0.2)
+    init_group_pos = spacing
+    for name, group_vals in izip(groups, values):
+        n_bars = len(group_vals)
+        group_width = ((thickness + spacing) * n_bars)
+        pos = linspace(init_group_pos, init_group_pos + group_width,
+                       endpoint=False, num=n_bars, retstep=False)
+        if labels is not None:
+            ax.set_xticks(pos, labels)
+        ax.bar(pos, group_vals, width=thickness, bottom=offset, **kwargs)
+        init_group_pos += thickness + spacing + group_spread
+    return ax
+
