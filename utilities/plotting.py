@@ -48,3 +48,18 @@ def generic_bars(groups, values, **kwargs):
         init_group_pos += group_spread + group_spacing + bar_spacing
     return ax
 
+if __name__ == '__main__':
+    from os import environ
+
+    out_path = environ['HOME'] + "/Desktop/test.png"
+
+    fig = plt.figure()
+    ax_a = fig.add_subplot(211)
+    ax_b = fig.add_subplot(212)
+    groups = ("A", "B", "C", )
+    values = ((0.7, 1.2, 0.5), (1.0, 1.2, 1.5), (0.7, 2.0, 1.2), )
+    ax_a = generic_bars(groups, values, **{'axes': ax_a, 'horizontal': True})
+    ax_b = generic_bars(groups, values, **{'axes': ax_b, 'horizontal': False})
+    plt.savefig(out_path, format=out_path.split(".")[-1], orientation='landscape',
+                dpi=600, transparent=True)
+
