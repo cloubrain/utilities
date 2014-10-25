@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from distutils.core import setup
+from setuptools import setup
 
 # This file is part of Utilities.
 #
@@ -19,21 +19,21 @@ from distutils.core import setup
 __author__ = 'horia margarit'
 
 setup(
-    name='Utilities',
     version='0.1.0',
-    author='Horia Margarit',
-    author_email='horia@cloubrain.com',
-    packages=('utilities', 'utilities.test', ),
-    scripts=('bin/structure_package.sh', ),
-    url='https://github.com/cloubrain/utilities',
+    name='Utilities',
     license='LICENSE.txt',
+    author='Horia Margarit',
+    include_package_data=True,
+    test_suite='nose.collector',
+    author_email='horia@cloubrain.com',
+    tests_require="nose >= 1.3.4, < 2.0",
+    scripts=('bin/structure_package.sh', ),
+    packages=('utilities', 'utilities.tests', ),
+    url='https://github.com/cloubrain/utilities',
+    long_description=open('README.txt', mode='rb').read(),
     description='Provides a collection of classes and functions meant to assist the scientific '+\
                 'and/or algorithmic minded Python programmer. As far as the authors know, '+\
                 'these utilities are not currently present in the Python standard library.',
-    long_description=open('README.txt', mode='rb').read(),
-    install_requires=(
-        "numpy >= 1.9.0",
-        "matplotlib >= 1.4.2",
-    ),
+    install_requires=("blist >= 1.3.6, < 2.0", "numpy >= 1.9.0, < 2.0", "matplotlib >= 1.4.2, < 2.0", ),
 )
 
